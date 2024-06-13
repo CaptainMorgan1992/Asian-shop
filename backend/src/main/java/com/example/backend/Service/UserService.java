@@ -1,6 +1,5 @@
 package com.example.backend.Service;
 
-
 import com.example.backend.DTO.RegisterUserDTO;
 import com.example.backend.Entities.Role;
 import com.example.backend.Entities.User;
@@ -9,6 +8,7 @@ import com.example.backend.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -17,11 +17,13 @@ import java.util.Collections;
 public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public ResponseEntity<String> registerNewUser(RegisterUserDTO registerUserDTO) {
@@ -37,7 +39,7 @@ public class UserService {
 
         user.setUsername(registerUserDTO.getUsername());
         user.setEmail(registerUserDTO.getEmail());
-        user.setPassword(registerUserDTO.getPassword());
+        user.setPassword(passwordEncoder.encode(registerUserDTO.getPassword()));
         user.setStreet(registerUserDTO.getStreet());
         user.setStreetNo(registerUserDTO.getStreetNo());
         user.setZipCode(registerUserDTO.getZipCode());
