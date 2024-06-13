@@ -7,17 +7,19 @@ import java.util.Date;
 
 @Entity
 @Data
-@Table
+@Table(name ="orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
+
     @Column
     private Date orderDate;
-    @Column
+
     @ManyToOne
     @JoinColumn(name = "userId")
     private User user;
+
     @Column
     private float totalPrice;
 }
