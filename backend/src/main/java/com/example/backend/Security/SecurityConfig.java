@@ -24,7 +24,9 @@ public class SecurityConfig {
                 .requestMatchers( "/api/product/create").authenticated()
                 .requestMatchers(
                         "/api/user/register",
-                        "/api/user/{id}"
+                        "/api/user/{id}",
+                        "/api/category/**",
+                        "/api/product/**"
                 ).permitAll());
     return http.build();
     }

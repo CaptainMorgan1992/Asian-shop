@@ -1,5 +1,6 @@
 package com.example.backend.Service;
 
+import com.example.backend.DTO.AddProductDTO;
 import com.example.backend.DTO.FetchUserDTO;
 import com.example.backend.DTO.RegisterUserDTO;
 import com.example.backend.Entities.Role;
@@ -75,14 +76,5 @@ public class UserService {
     }
 
 
-    /*
-    private FetchUserDTO convertToDTO(User user) {
-            UserDTO userDTO = new UserDTO();
-            userDTO.setId(user.getId());
-            userDTO.setUsername(user.getUsername());
-            return userDTO;
 
-    }
-
-     */
 }

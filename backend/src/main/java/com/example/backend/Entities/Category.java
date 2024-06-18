@@ -12,7 +12,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int categoryId;
 
-    @Column
+    @Column (nullable = false)
     private String categoryName;
 
 }
