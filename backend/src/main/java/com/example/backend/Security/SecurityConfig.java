@@ -23,7 +23,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                 .requestMatchers( "/api/product/create").authenticated()
                 .requestMatchers(
-                        "/api/user/register"
+                        "/api/user/register",
+                        "/api/user/{id}"
                 ).permitAll());
     return http.build();
     }
