@@ -7,11 +7,12 @@ import java.util.UUID;
 
 @Entity
 @Data
-@Table
+@Table(name="roles")
 public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID roleId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int roleId;
+
     @Column
     private String name;
 }
