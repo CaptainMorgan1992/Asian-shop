@@ -56,14 +56,6 @@ public class UserService {
 
     }
 
-    /*
-    public FetchUserDTO fetchUserDetails(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-        return convertToDTO(user);
-    }
-
-     */
-
     public ResponseEntity<FetchUserDTO> findUserByUserId(int id) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
