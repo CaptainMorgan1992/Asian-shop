@@ -11,4 +11,6 @@ public class AddProductDTO {
     private float price;
     private int stock;
     private int categoryId;
+    private byte [] data;
+    private long size;
 }

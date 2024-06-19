@@ -9,14 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
 public class ProductService {
 
-    private ProductRepository productRepository;
-    private CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
     private ProductService(ProductRepository productRepository, CategoryRepository categoryRepository) {
@@ -24,7 +26,7 @@ public class ProductService {
         this.categoryRepository = categoryRepository;
     }
 
-    public ResponseEntity<String> addNewProduct(AddProductDTO addProductDTO) {
+    public ResponseEntity<String> addNewProduct(AddProductDTO addProductDTO, MultipartFile file) throws IOException {
 
         boolean doesExistInDB = productRepository.existsByName(addProductDTO.getProductName());
             if(doesExistInDB) {
@@ -35,15 +37,32 @@ public class ProductService {
                 if (!categoryOptional.isPresent()) {
                     return new ResponseEntity<>("Category not found", HttpStatus.BAD_REQUEST);
                 }
-                Products product = new Products();
 
-                Category category = categoryOptional.get();
-                product.setProductName(addProductDTO.getProductName());
-                product.setCategory(category);
-                product.setPrice(addProductDTO.getPrice());
-                product.setStock(addProductDTO.getStock());
-                productRepository.save(product);
-                return new ResponseEntity<>("You have successfully added a new product to the DB", HttpStatus.OK);
+                boolean isImageSizeValid = isValidImageSize(file);
+                if (isImageSizeValid) {
+                    Products product = new Products();
+
+                    Category category = categoryOptional.get();
+                    product.setProductName(addProductDTO.getProductName());
+                    product.setCategory(category);
+                    product.setPrice(addProductDTO.getPrice());
+                    product.setStock(addProductDTO.getStock());
+                    product.setData(file.getBytes());
+                    product.setSize(file.getSize());
+                    productRepository.save(product);
+                    return new ResponseEntity<>("You have successfully added a new product to the DB", HttpStatus.OK);
+                }
+                else {
+                    return new ResponseEntity<>("Image size is too large", HttpStatus.BAD_REQUEST);
+                }
             }
+
+    }
+
+    public boolean isValidImageSize(MultipartFile file) {
+        long imageSize = file.getSize();
+        long maxSize = 2 * 1024 * 1024; // 2mb
+
+        return imageSize <= maxSize;
     }
 }

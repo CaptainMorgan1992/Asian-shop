@@ -3,14 +3,14 @@ package com.example.backend.Controller;
 
 import com.example.backend.DTO.AddProductDTO;
 import com.example.backend.Service.ProductService;
-import com.example.backend.Service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/product")
@@ -23,8 +23,11 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<String> addProduct(@Valid @RequestBody AddProductDTO addProductDTO) {
-        return productService.addNewProduct(addProductDTO);
+    @PostMapping(value = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> addProduct(
+            @Valid
+            @RequestPart("data") AddProductDTO addProductDTO,
+            @RequestPart("file") MultipartFile file) throws IOException {
+        return productService.addNewProduct(addProductDTO, file);
     }
 }

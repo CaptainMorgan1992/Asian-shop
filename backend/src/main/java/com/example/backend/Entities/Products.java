@@ -24,4 +24,11 @@ public class Products {
 
     @Column(nullable = false)
     private int stock;
+
+    @Lob
+    @Column
+    private byte [] data;
+
+    @Column
+    private long size;
 }
