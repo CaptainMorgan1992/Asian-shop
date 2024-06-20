@@ -2,6 +2,7 @@ package com.example.backend.Service;
 
 import com.example.backend.DTO.AddProductDTO;
 import com.example.backend.DTO.FetchUserDTO;
+import com.example.backend.DTO.LoginDTO;
 import com.example.backend.DTO.RegisterUserDTO;
 import com.example.backend.Entities.Role;
 import com.example.backend.Entities.User;
@@ -11,6 +12,11 @@ import com.example.backend.interfaces.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +29,19 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
+    public UserService(
+            UserRepository userRepository,
+            RoleRepository roleRepository,
+            PasswordEncoder passwordEncoder,
+            AuthenticationManager authenticationManager) {
+            this.userRepository = userRepository;
+            this.roleRepository = roleRepository;
+            this.passwordEncoder = passwordEncoder;
+            this.authenticationManager = authenticationManager;
     }
 
     public ResponseEntity<String> registerNewUser(RegisterUserDTO registerUserDTO) {
@@ -65,6 +78,20 @@ public class UserService {
         else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    public ResponseEntity<String> authenticateUser(LoginDTO loginDTO) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            return new ResponseEntity<>( " is successfully logged in.", HttpStatus.OK);
+
+        } catch (AuthenticationException ex) {
+            return new ResponseEntity<>("Authentication failed: " + ex.getMessage(), HttpStatus.UNAUTHORIZED);
+        }
+
     }
 
 
