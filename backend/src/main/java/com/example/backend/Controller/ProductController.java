@@ -38,4 +38,6 @@ public class ProductController {
     public ResponseEntity<List<FetchProductDTO>> fetchAllProducts(){
         return new ResponseEntity<>(productService.fetchAllProducts(), HttpStatus.OK);
     }
+
+
 }
