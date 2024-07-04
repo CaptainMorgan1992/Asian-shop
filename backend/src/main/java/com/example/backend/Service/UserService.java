@@ -1,6 +1,5 @@
 package com.example.backend.Service;
 
-import com.example.backend.DTO.AddProductDTO;
 import com.example.backend.DTO.FetchUserDTO;
 import com.example.backend.DTO.RegisterUserDTO;
 import com.example.backend.Entities.Role;
@@ -23,12 +22,18 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserService(
+            UserRepository userRepository,
+            RoleRepository roleRepository,
+            PasswordEncoder passwordEncoder,
+            UserMapper userMapper) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userMapper = userMapper;
     }
 
     public ResponseEntity<String> registerNewUser(RegisterUserDTO registerUserDTO) {
@@ -59,7 +64,9 @@ public class UserService {
     public ResponseEntity<FetchUserDTO> findUserByUserId(int id) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
-            FetchUserDTO fetchUserDTO = UserMapper.INSTANCE.userToUserDTO(userOptional.get());
+          FetchUserDTO fetchUserDTO = UserMapper.INSTANCE.userToUserDTO(userOptional.get());
+            //FetchUserDTO fetchUserDTO = userMapper.userToUserDTO(userOptional.get());
+            System.out.println("Hello from isPresent" + fetchUserDTO);
             return new ResponseEntity<>(fetchUserDTO, HttpStatus.OK);
         }
         else {
