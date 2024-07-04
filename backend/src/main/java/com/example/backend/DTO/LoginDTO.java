@@ -1,10 +1,10 @@
 package com.example.backend.DTO;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 
-@Getter
-@AllArgsConstructor
+@Data
 public class LoginDTO {
 
     private String username;

@@ -82,7 +82,8 @@ public class UserService {
             }
         }
 
-        public ResponseEntity<String> authenticateUser (LoginDTO loginDTO){
+
+        public ResponseEntity<String> authenticateUser (LoginDTO loginDTO) {
             try {
                 Authentication authentication = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
@@ -94,8 +95,7 @@ public class UserService {
                 return new ResponseEntity<>("Authentication failed: " + ex.getMessage(), HttpStatus.UNAUTHORIZED);
             }
 
+
         }
-
-
     }
 
