@@ -44,9 +44,10 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
         this.authenticationManager = authenticationManager;
+    }
 
 
-        public ResponseEntity<String> registerNewUser (RegisterUserDTO registerUserDTO){
+        public ResponseEntity<String> registerNewUser(RegisterUserDTO registerUserDTO){
 
             if (userRepository.existsByUsername(registerUserDTO.getUsername())) {
                 return new ResponseEntity<>("Username already exists", HttpStatus.BAD_REQUEST);
@@ -71,7 +72,7 @@ public class UserService {
 
         }
 
-        public ResponseEntity<FetchUserDTO> findUserByUserId ( int id){
+        public ResponseEntity<FetchUserDTO> findUserByUserId (int id){
             Optional<User> userOptional = userRepository.findById(id);
             if (userOptional.isPresent()) {
                 FetchUserDTO fetchUserDTO = UserMapper.INSTANCE.userToUserDTO(userOptional.get());
@@ -97,4 +98,4 @@ public class UserService {
 
 
     }
-}
+
