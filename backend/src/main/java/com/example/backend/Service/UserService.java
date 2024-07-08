@@ -8,6 +8,7 @@ import com.example.backend.Entities.User;
 import com.example.backend.Repository.RoleRepository;
 import com.example.backend.Repository.UserRepository;
 import com.example.backend.interfaces.UserMapper;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
     private final AuthenticationManager authenticationManager;
+    private final HttpSession httpSession;
 
 
     @Autowired
@@ -38,12 +40,14 @@ public class UserService {
             RoleRepository roleRepository,
             PasswordEncoder passwordEncoder,
             UserMapper userMapper,
-            AuthenticationManager authenticationManager) {
+            AuthenticationManager authenticationManager,
+            HttpSession httpSession) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
         this.authenticationManager = authenticationManager;
+        this.httpSession = httpSession;
     }
 
 
