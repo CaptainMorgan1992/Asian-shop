@@ -25,13 +25,13 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+
+    //userMapper behöver vara kvar som den är nu, annars blir det 403 forbidden vid inlogg
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-    public UserMapper userMapper;
+    private final UserMapper userMapper;
     private final AuthenticationManager authenticationManager;
-    public HttpSession httpSession;
-
 
     @Autowired
     public UserService(
@@ -39,14 +39,12 @@ public class UserService {
             RoleRepository roleRepository,
             PasswordEncoder passwordEncoder,
             UserMapper userMapper,
-            AuthenticationManager authenticationManager,
-            HttpSession httpSession) {
+            AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
         this.authenticationManager = authenticationManager;
-        this.httpSession = httpSession;
     }
 
 
@@ -97,8 +95,6 @@ public class UserService {
             } catch (AuthenticationException ex) {
                 return new ResponseEntity<>("Authentication failed: " + ex.getMessage(), HttpStatus.UNAUTHORIZED);
             }
-
-
         }
     }
 
