@@ -20,7 +20,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -29,9 +28,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserMapper userMapper;
+    public UserMapper userMapper;
     private final AuthenticationManager authenticationManager;
-    private final HttpSession httpSession;
+    public HttpSession httpSession;
 
 
     @Autowired
@@ -72,7 +71,7 @@ public class UserService {
             Role roles = roleRepository.findByName("ROLE_USER").get();
             user.setRoles(Collections.singleton(roles));
             userRepository.save(user);
-            return new ResponseEntity<String>("Registration successful", HttpStatus.OK);
+            return new ResponseEntity<>("Registration successful", HttpStatus.OK);
 
         }
 
