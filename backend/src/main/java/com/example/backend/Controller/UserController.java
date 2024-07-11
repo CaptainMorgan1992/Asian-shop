@@ -5,8 +5,11 @@ import com.example.backend.DTO.FetchUserDTO;
 import com.example.backend.DTO.LoginDTO;
 import com.example.backend.DTO.RegisterUserDTO;
 import com.example.backend.Service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +36,11 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<String> authenticateUser(@RequestBody LoginDTO loginDTO) {
         return userService.authenticateUser(loginDTO);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logoutUser(HttpServletRequest request, HttpSession session) {
+        return new ResponseEntity<>("Logout successful", HttpStatus.OK);
     }
 
 }
