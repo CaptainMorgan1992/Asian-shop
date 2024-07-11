@@ -15,11 +15,11 @@ export default function Navbar() {
 
             {validateResponse && (
                 <>
-                    <Link to={'myPosts'}>
-                        <button>My posts</button>
+                    <Link to={'myProfile'}>
+                        <button>My profile</button>
                     </Link>
-                    <Link to={'createPost'}>
-                        <button>Create post</button>
+                    <Link to={'orderHistory'}>
+                        <button>My orders</button>
                     </Link>
                     <Link to={'logout'}>
                         <button onClick={handleLogout}>Logout</button>
@@ -28,9 +28,12 @@ export default function Navbar() {
             )}
 
             <Link to={'allPosts'}>
-                <button>All posts</button>
+                <button>All products</button>
             </Link>
 
+            <Link to={'productsByCategory'}>
+                <button>Categories</button>
+            </Link>
             {!validateResponse && (
                 <>
                     <Link to={'register'}>

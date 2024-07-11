@@ -2,7 +2,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 3 products per row */
     gap: 20px; /* Space between the products */
-    padding: 20px;
+    padding: 20px 100px;
 }
 
 .individual-product {
