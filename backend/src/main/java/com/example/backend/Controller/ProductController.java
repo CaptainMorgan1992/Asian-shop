@@ -34,7 +34,7 @@ public class ProductController {
         return productService.addNewProduct(addProductDTO, file);
     }
 
-    @GetMapping("/fetch/all")
+    @GetMapping("/all")
     public ResponseEntity<List<FetchProductDTO>> fetchAllProducts(){
         return new ResponseEntity<>(productService.fetchAllProducts(), HttpStatus.OK);
     }

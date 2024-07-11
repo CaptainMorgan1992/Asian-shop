@@ -14,7 +14,7 @@ public class RegisterUserDTO {
     @Email(message= "Invalid email")
     private String email;
 
-    @Size(min = 6, message = "Password must be at least 4 characters long")
+    @Size(min = 6, message = "Password must be at least 6 characters long")
     @Pattern.List({
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[A-Z]).+$", message = "Password must contain one digit and one uppercase letter")})
     private String password;

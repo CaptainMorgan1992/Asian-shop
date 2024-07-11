@@ -1,5 +1,6 @@
 package com.example.backend.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -27,6 +28,7 @@ public class Products {
 
     @Lob
     @Column
+    @JsonIgnore
     private byte [] data;
 
     @Column
