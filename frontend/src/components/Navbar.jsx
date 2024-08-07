@@ -24,6 +24,9 @@ export default function Navbar() {
                     <Link to={'logout'}>
                         <button onClick={handleLogout}>Logout</button>
                     </Link>
+                    <Link to={'Cart'}>
+                        <button>View Cart</button>
+                    </Link>
                 </>
             )}
 

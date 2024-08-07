@@ -8,6 +8,7 @@ import Login from "./components/Login.jsx";
 import ErrorBoundary from "./pages/ErrorBoundary.jsx";
 import RegistrationPage from "./pages/RegistrationPage.jsx";
 import AllProductsPage from "./pages/AllProductsPage.jsx";
+import LogoutPage from "./components/Logout.jsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -16,6 +17,7 @@ const router = createBrowserRouter(
             <Route path={'login'} element={<Login/>}/>
             <Route path={'register'} element={<RegistrationPage/>}/>
             <Route path={'products'} element={<AllProductsPage/>}/>
+            <Route path={'logout'} element={<LogoutPage/>}/>
         </Route>
     )
 )
