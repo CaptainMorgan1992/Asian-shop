@@ -30,7 +30,7 @@ export default function Navbar() {
                 </>
             )}
 
-            <Link to={'allPosts'}>
+            <Link to={'allProducts'}>
                 <button>All products</button>
             </Link>
 

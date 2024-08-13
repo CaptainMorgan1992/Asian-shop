@@ -9,6 +9,7 @@ import ErrorBoundary from "./pages/ErrorBoundary.jsx";
 import RegistrationPage from "./pages/RegistrationPage.jsx";
 import AllProductsPage from "./pages/AllProductsPage.jsx";
 import LogoutPage from "./components/Logout.jsx";
+import Cart from "./pages/CartPage.jsx"
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -18,6 +19,8 @@ const router = createBrowserRouter(
             <Route path={'register'} element={<RegistrationPage/>}/>
             <Route path={'products'} element={<AllProductsPage/>}/>
             <Route path={'logout'} element={<LogoutPage/>}/>
+            <Route path={"/allProducts"} element={<AllProductsPage/>}/>
+            <Route path={"/cart"} element={<Cart/>}/>
         </Route>
     )
 )

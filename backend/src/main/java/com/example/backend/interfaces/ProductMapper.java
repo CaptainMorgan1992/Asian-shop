@@ -9,5 +9,16 @@ import org.mapstruct.factory.Mappers;
 public interface ProductMapper {
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
-    FetchProductDTO productToProductDTO(Products product);
+    //FetchProductDTO productToProductDTO(Products product);
+
+    default FetchProductDTO productToProductDTO(Products product) {
+        FetchProductDTO dto = new FetchProductDTO();
+        dto.setProductId(product.getProductId()); // Explicitly set the productId
+        dto.setProductName(product.getProductName());
+        dto.setPrice(product.getPrice());
+        dto.setStock(product.getStock());
+        dto.setData(product.getData());
+        dto.setSize(product.getSize());
+        return dto;
+    }
 }

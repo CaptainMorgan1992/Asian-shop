@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class FetchProductDTO {
+    private int productId;
     private String productName;
     private float price;
     private int stock;

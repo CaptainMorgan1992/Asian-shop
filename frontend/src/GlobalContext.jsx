@@ -8,6 +8,7 @@ export const GlobalProvider = ({children}) => {
     const [csrfToken, setCsrfToken] = useState(null);
     const [validateResponse, setValidateResponse] = useState(initialValidateResponse);
     const [products, setProducts] = useState([]);
+    const [amountOfProduct, setAmountOfProduct] = useState([]);
 
     useEffect(() => {
         setValidateResponse(validateResponse);
@@ -107,7 +108,9 @@ export const GlobalProvider = ({children}) => {
                 registerUser,
                 loadProducts,
                 products,
-                setProducts
+                setProducts,
+                amountOfProduct,
+                setAmountOfProduct
 
             }}
             >
