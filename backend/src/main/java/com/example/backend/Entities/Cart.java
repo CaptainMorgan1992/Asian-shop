@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table
+@Table(name="cart")
 public class Cart {
 
     @Id
@@ -17,6 +17,7 @@ public class Cart {
 
     @OneToOne
     private User user;
+
 
     public Cart(Products product, User user) {
     }

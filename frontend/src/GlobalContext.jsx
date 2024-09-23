@@ -8,7 +8,8 @@ export const GlobalProvider = ({children}) => {
     const [csrfToken, setCsrfToken] = useState(null);
     const [validateResponse, setValidateResponse] = useState(initialValidateResponse);
     const [products, setProducts] = useState([]);
-    const [amountOfProduct, setAmountOfProduct] = useState([]);
+    const [cart, setCart] = useState([]);
+
 
     useEffect(() => {
         setValidateResponse(validateResponse);
@@ -23,6 +24,23 @@ export const GlobalProvider = ({children}) => {
         } catch (error) {
             console.error(error);
         }
+    };
+
+    const addToCart = (newItem) => {
+        setCart((prevCart) => {
+            const existingItem = prevCart.find(item => item.productId === newItem.productId);
+            if (existingItem) {
+                // If the product is already in the cart, update the amount
+                return prevCart.map(item =>
+                    item.productId === newItem.productId
+                        ? { ...item, amount: item.amount + newItem.amount }
+                        : item
+                );
+            } else {
+                // If it's a new product, add it to the cart
+                return [...prevCart, newItem];
+            }
+        });
     };
 
     const registerUser = async (userData) => {
@@ -56,6 +74,7 @@ export const GlobalProvider = ({children}) => {
                 credentials: 'include'
             });
 
+            setUser(username);
             setValidateResponse(response.ok)
             localStorage.setItem("validateResponse", JSON.stringify(response.ok));
 
@@ -63,6 +82,7 @@ export const GlobalProvider = ({children}) => {
             console.error(error);
         }
     }
+
 
     const handleLogout = async () => {
         try {
@@ -93,8 +113,8 @@ export const GlobalProvider = ({children}) => {
             setProducts(result);
         } catch(error) {
             console.error(error);
-        }}
-
+        }
+    }
 
     return (
         <GlobalContext.Provider
@@ -109,8 +129,9 @@ export const GlobalProvider = ({children}) => {
                 loadProducts,
                 products,
                 setProducts,
-                amountOfProduct,
-                setAmountOfProduct
+                cart,
+                setCart,
+                addToCart,
 
             }}
             >

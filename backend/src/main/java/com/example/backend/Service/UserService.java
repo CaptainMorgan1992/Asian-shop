@@ -86,7 +86,6 @@ public class UserService {
             }
         }
 
-
         public ResponseEntity<String> authenticateUser (LoginDTO loginDTO) {
             try {
                 Authentication authentication = authenticationManager.authenticate(

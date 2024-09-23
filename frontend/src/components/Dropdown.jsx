@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
 
 export default function Dropdown({ productId, onAmountChange }) {
     const [localAmount, setLocalAmount] = useState(1);
