@@ -5,12 +5,14 @@ import {Link} from "react-router-dom";
 import Dropdown from "../components/Dropdown.jsx";
 
 export default function AllProductsPage() {
-    const {products, loadProducts, addToCart, validateResponse} = useContext(GlobalContext);
+    const {products, loadProducts, addProductToCart, validateResponse, user} = useContext(GlobalContext);
     const [searchTerm, setSearchTerm] = useState("");
     const [amounts, setAmounts] = useState({});
     const filteredProducts = (products || []).filter((product) => product.productName.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    console.log(user);
+    
     useEffect(() => {
         loadProducts();
     }, [loadProducts])
@@ -38,30 +40,20 @@ export default function AllProductsPage() {
                         </Link>
                         <p> price: {product.price} $ </p>
                         {validateResponse && (
-                                            <>
+                            <>
                             <Dropdown
                             productId={product.productId}
                             onAmountChange={handleAmountChange}
 
-                        />
-                            </>) }
+                            />
+                            </>
+                        )}
 
                         {validateResponse && (
-                        <button
-                            onClick={() =>
-                                addToCart({
-                                    productId: product.productId,
-                                    name: product.productName,
-                                    price: product.price,
-                                    amount: amounts[product.productId] || 1,
-                                })
-                            }
-                        >
+                        <button onClick={() => addProductToCart(product.productId)}>
                             Add to cart
                         </button>
-      
                       )}
-
                     </div>
                 ))}
             </div>

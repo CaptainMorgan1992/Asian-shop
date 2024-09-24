@@ -19,11 +19,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -86,17 +89,20 @@ public class UserService {
             }
         }
 
-        public ResponseEntity<String> authenticateUser (LoginDTO loginDTO) {
-            try {
-                Authentication authentication = authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
+    public ResponseEntity<String> authenticateUser (LoginDTO loginDTO) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                return new ResponseEntity<>(" is successfully logged in.", HttpStatus.OK);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            } catch (AuthenticationException ex) {
-                return new ResponseEntity<>("Authentication failed: " + ex.getMessage(), HttpStatus.UNAUTHORIZED);
-            }
+            User user = userRepository.findByUsername(loginDTO.getUsername());
+
+            return new ResponseEntity<>("User " + user.getUserId() + " is successfully logged in.", HttpStatus.OK);
+
+        } catch (AuthenticationException ex) {
+            return new ResponseEntity<>("Authentication failed: " + ex.getMessage(), HttpStatus.UNAUTHORIZED);
         }
+    }
 }
 

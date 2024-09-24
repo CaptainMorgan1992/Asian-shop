@@ -37,6 +37,6 @@ public class User {
     @ManyToMany // add fetchtypes later
     private Set<Role> roles;
 
-
-
 }
+
+

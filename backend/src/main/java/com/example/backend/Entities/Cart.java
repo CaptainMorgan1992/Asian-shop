@@ -18,7 +18,6 @@ public class Cart {
     @OneToOne
     private User user;
 
-
     public Cart(Products product, User user) {
     }
 

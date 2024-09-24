@@ -9,16 +9,19 @@ export const GlobalProvider = ({children}) => {
     const [validateResponse, setValidateResponse] = useState(initialValidateResponse);
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
+    const [message, setMessage] = useState("");
 
 
     useEffect(() => {
         setValidateResponse(validateResponse);
         void loadProducts();
         fetchCsrfToken();
-    }, [validateResponse])
+        setUser(user);
+    }, [validateResponse, user])
+
     const fetchCsrfToken = async () => {
         try {
-            const csrfRes = await fetch("http://localhost:8080/csrf", { credentials: "include" });
+            const csrfRes = await fetch("http://localhost:8080/csrf", {credentials: "include"});
             const token = await csrfRes.json();
             setCsrfToken(token.token);
         } catch (error) {
@@ -33,7 +36,7 @@ export const GlobalProvider = ({children}) => {
                 // If the product is already in the cart, update the amount
                 return prevCart.map(item =>
                     item.productId === newItem.productId
-                        ? { ...item, amount: item.amount + newItem.amount }
+                        ? {...item, amount: item.amount + newItem.amount}
                         : item
                 );
             } else {
@@ -42,6 +45,32 @@ export const GlobalProvider = ({children}) => {
             }
         });
     };
+
+    const addProductToCart = async (productId) => {
+        console.log(csrfToken)
+        console.log("hej!")
+        try {
+            const requestOptions = {
+                method: 'POST',
+                headers:
+                    {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                credentials: 'include'
+            }
+
+            const response = await fetch(`http://localhost:8080/api/cart/addToCart/${productId}`, requestOptions);
+
+        if(response.ok) {
+            console.log("item was added to cart")
+        }
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    }
+
 
     const registerUser = async (userData) => {
         const requestOptions = {
@@ -62,23 +91,55 @@ export const GlobalProvider = ({children}) => {
         }
     };
 
+
     const submitLogin = async (username, password) => {
         try {
             const response = await fetch("http://localhost:8080/api/user/login", {
                 method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify({username, password}),
                 credentials: 'include'
             });
 
-            setUser(username);
-            setValidateResponse(response.ok)
-            localStorage.setItem("validateResponse", JSON.stringify(response.ok));
+            if(response.ok) {
+                const message = await response.text();
+                const words = message.split(" ");
+                const userId = words[1]
+
+                setNewUser(userId);
+
+                setValidateResponse(response.ok)
+                localStorage.setItem("validateResponse", JSON.stringify(response.ok));
+            }
 
         } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const setNewUser = async (userId) => {
+        try {
+            const response = await fetch (`http://localhost:8080/api/user/${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                credentials: "include"
+            })
+
+            if(response.ok) {
+            const fetchUserDTO = await response.json();
+            setUser(fetchUserDTO);
+            }
+            else {
+                console.error("Error fetching user: ", response.statusText);
+            }
+
+        } catch (error)  {
             console.error(error);
         }
     }
@@ -132,6 +193,7 @@ export const GlobalProvider = ({children}) => {
                 cart,
                 setCart,
                 addToCart,
+                addProductToCart
 
             }}
             >

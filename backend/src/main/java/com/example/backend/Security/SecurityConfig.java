@@ -39,7 +39,7 @@ public class SecurityConfig {
                         CorsConfiguration config = new CorsConfiguration();
                         config.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
                         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT"));
-                        config.setAllowCredentials(true);
+                        config.setAllowCredentials(true);    
                         config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "x-csrf-token"));
                         config.setMaxAge(3600L);
                         return config;
@@ -54,7 +54,10 @@ public class SecurityConfig {
                 .requestMatchers(
                         "/api/user/logout",
                         "/api/product/add",
-                        "/api/category/add"
+                        "/api/category/add",
+                        "/api/cart/addToCart/{id}",
+                        "/api/cart/addToCart/**",
+                        "/api/cart/**"
                         ).authenticated()
                 .requestMatchers(
                         "/api/user/register",
@@ -62,7 +65,6 @@ public class SecurityConfig {
                         "/api/category/fetchProductsFromCategory/{id}",
                         "/api/product/all",
                         "/api/user/login",
-                        "/api/addToCart/**",
                         "/csrf"
                 ).permitAll());
     return http.build();
