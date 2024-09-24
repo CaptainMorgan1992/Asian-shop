@@ -26,10 +26,8 @@ public class CartService {
     public Cart addToCart(Integer productId, Principal principal) {
         Products product = productRepository.findById(productId).get();
         String username = principal.getName();
-        User user = null;
-        if(username != null) {
-            user = userRepository.findByUsername(username);
-        }
+        User user = userRepository.findByUsername(username);
+
         if (product.getStock() > 0) {
             Cart cart = new Cart(product, user);
             return cartRepository.save(cart);

@@ -47,10 +47,8 @@ export const GlobalProvider = ({children}) => {
     };
 
     const addProductToCart = async (productId) => {
-        console.log(csrfToken)
-        console.log("hej!")
         try {
-            const requestOptions = {
+            const response = await fetch(`http://localhost:8080/api/cart/addToCart/${productId}`,{
                 method: 'POST',
                 headers:
                     {
@@ -58,9 +56,7 @@ export const GlobalProvider = ({children}) => {
                         'X-CSRF-TOKEN': csrfToken,
                     },
                 credentials: 'include'
-            }
-
-            const response = await fetch(`http://localhost:8080/api/cart/addToCart/${productId}`, requestOptions);
+            })
 
         if(response.ok) {
             console.log("item was added to cart")
@@ -109,9 +105,9 @@ export const GlobalProvider = ({children}) => {
                 const words = message.split(" ");
                 const userId = words[1]
 
-                setNewUser(userId);
+                await setNewUser(userId);
 
-                setValidateResponse(response.ok)
+                setValidateResponse(true)
                 localStorage.setItem("validateResponse", JSON.stringify(response.ok));
             }
 

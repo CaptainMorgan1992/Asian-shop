@@ -55,7 +55,6 @@ public class SecurityConfig {
                         "/api/user/logout",
                         "/api/product/add",
                         "/api/category/add",
-                        "/api/cart/addToCart/{id}",
                         "/api/cart/addToCart/**",
                         "/api/cart/**"
                         ).authenticated()

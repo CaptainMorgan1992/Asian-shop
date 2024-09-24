@@ -5,16 +5,23 @@ import {Link} from "react-router-dom";
 import Dropdown from "../components/Dropdown.jsx";
 
 export default function AllProductsPage() {
-    const {products, loadProducts, addProductToCart, validateResponse, user} = useContext(GlobalContext);
+    const {products, loadProducts, addProductToCart, validateResponse, user, setValidateResponse} = useContext(GlobalContext);
     const [searchTerm, setSearchTerm] = useState("");
     const [amounts, setAmounts] = useState({});
     const filteredProducts = (products || []).filter((product) => product.productName.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
-    console.log(user);
     
     useEffect(() => {
-        loadProducts();
+
+        const storedValidation = localStorage.getItem("validateResponse");
+
+       if(storedValidation === "true") {
+           setValidateResponse(true);
+       }      else {
+           setValidateResponse(false);
+       }
+       
+       loadProducts();
     }, [loadProducts])
 
     const handleAmountChange = (productId, amount) => {
@@ -24,6 +31,10 @@ export default function AllProductsPage() {
         }));
     };
 
+    const testFunction = (productId) => {
+                   console.log(productId)
+        console.log(validateResponse)
+    }
     return (
         <>
             <SearchBar searchTerm={searchTerm} onChange={setSearchTerm} />
@@ -50,7 +61,7 @@ export default function AllProductsPage() {
                         )}
 
                         {validateResponse && (
-                        <button onClick={() => addProductToCart(product.productId)}>
+                        <button onClick={() => testFunction(product.productId)}>
                             Add to cart
                         </button>
                       )}
